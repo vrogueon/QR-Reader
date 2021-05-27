@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qrreader/src/pages/addresses_page.dart';
 import 'package:qrreader/src/pages/maps_page.dart';
+import 'package:qrcode_reader/qrcode_reader.dart';
+import 'package:qrreader/src/providers/db_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -62,8 +64,27 @@ class _HomePageState extends State<HomePage> {
   Widget _createFloatingActionButton() {
     return FloatingActionButton(
       child: Icon(Icons.filter_center_focus),
-      onPressed: () {},
+      onPressed: (_scanQR()),
       backgroundColor: Theme.of(context).primaryColor,
     );
+  }
+
+  _scanQR() async{
+    // https://google.com
+    // geo:40.724233047051705, -74.00731459101564
+
+    String futureString = 'https://google.com';
+
+
+    // try {
+    //   futureString = await new QRCodeReader().scan();
+    // } catch (e) {
+    //   futureString = e.toString();
+    // }
+
+    if (futureString != null) {
+      final scan = ScanModel(value: futureString);
+      DBProvider.db.newScan(scan);
+    }
   }
 }
